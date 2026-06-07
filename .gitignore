@@ -1,0 +1,16 @@
+target/
+*.class
+*.jar
+*.war
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# WAL and data files — don't commit user data
+vectordb.wal
+test_vectordb.wal
+*.wal
+
+# Maven wrapper (optional — keep if you want mvnw in the repo)
+# !.mvn/wrapper/maven-wrapper.jar

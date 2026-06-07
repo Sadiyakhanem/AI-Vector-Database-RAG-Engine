@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  vectordb:
+    build: .
+    container_name: vectordb
+    ports:
+      - "8080:8080"
+    volumes:
+      # WAL file persists here — survives container restarts
+      - vectordb-data:/app/data
+    environment:
+      - JAVA_OPTS=-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0
+      # Set to "true" to use mock Ollama responses (for demo hosting without GPU)
+      - DEMO_MODE=false
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Uncomment to run Ollama in Docker (requires NVIDIA GPU or sufficient RAM)
+  # ollama:
+  #   image: ollama/ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama-data:/root/.ollama
+  #   restart: unless-stopped
+
+volumes:
+  vectordb-data:
+  # ollama-data:
